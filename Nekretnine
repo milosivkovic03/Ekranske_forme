@@ -1,0 +1,106 @@
+USE [master]
+GO
+/****** Object:  Database [Nekretnine]    Script Date: 15.12.2021. 14:39:29 ******/
+CREATE DATABASE [Nekretnine]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'Nekretnine', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\Nekretnine.mdf' , SIZE = 4096KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'Nekretnine_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\DATA\Nekretnine_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+ALTER DATABASE [Nekretnine] SET COMPATIBILITY_LEVEL = 120
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [Nekretnine].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [Nekretnine] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [Nekretnine] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [Nekretnine] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [Nekretnine] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [Nekretnine] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [Nekretnine] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [Nekretnine] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [Nekretnine] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [Nekretnine] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [Nekretnine] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [Nekretnine] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [Nekretnine] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [Nekretnine] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [Nekretnine] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [Nekretnine] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [Nekretnine] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [Nekretnine] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [Nekretnine] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [Nekretnine] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [Nekretnine] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [Nekretnine] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [Nekretnine] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [Nekretnine] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [Nekretnine] SET  MULTI_USER 
+GO
+ALTER DATABASE [Nekretnine] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [Nekretnine] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [Nekretnine] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [Nekretnine] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+ALTER DATABASE [Nekretnine] SET DELAYED_DURABILITY = DISABLED 
+GO
+USE [Nekretnine]
+GO
+/****** Object:  Table [dbo].[Objekat]    Script Date: 15.12.2021. 14:39:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Objekat](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[tip] [nvarchar](4) NOT NULL,
+	[povrsina] [nvarchar](10) NOT NULL,
+	[cena] [nvarchar](15) NOT NULL,
+	[adresa] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Objekat] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET IDENTITY_INSERT [dbo].[Objekat] ON 
+
+INSERT [dbo].[Objekat] ([id], [tip], [povrsina], [cena], [adresa]) VALUES (1, N'stan', N'75.5', N'150000', N'Dunavska 12, Beograd')
+INSERT [dbo].[Objekat] ([id], [tip], [povrsina], [cena], [adresa]) VALUES (2, N'stan', N'120', N'123000', N'Kumodrsaka 14, Beograd')
+INSERT [dbo].[Objekat] ([id], [tip], [povrsina], [cena], [adresa]) VALUES (4, N'kuca', N'1200', N'250000', N'Zemunska 24, Zemun')
+INSERT [dbo].[Objekat] ([id], [tip], [povrsina], [cena], [adresa]) VALUES (6, N'kuca', N'78.25', N'92000', N'Dusanova 15, Zemun')
+SET IDENTITY_INSERT [dbo].[Objekat] OFF
+USE [master]
+GO
+ALTER DATABASE [Nekretnine] SET  READ_WRITE 
+GO
