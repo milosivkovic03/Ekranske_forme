@@ -1,0 +1,125 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Data.SqlClient;
+
+namespace MilosIvkovic_Ekranske_forme
+{
+    public partial class Form1 : Form
+    {
+        string konString = "Data Source=DESKTOP-V52HFRB\\SQLEXPRESS;Initial Catalog=Nekretnine;Integrated Security=True";
+        DataTable mojaTabela = new DataTable();
+        SqlConnection konekcija;
+        SqlDataAdapter adapter;
+        int trenutni;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            konekcija = new SqlConnection(konString);
+            adapter = new SqlDataAdapter("select * from Objekat", konekcija);
+            adapter.Fill(mojaTabela);
+            trenutni = 0;
+            prikazi(trenutni);
+        }
+
+        private void prikazi(int trenutni)
+        {
+            if (mojaTabela.Rows.Count != 0)
+            {
+                tbId.Text = mojaTabela.Rows[trenutni]["id"].ToString();
+                cbTip.Text = mojaTabela.Rows[trenutni]["tip"].ToString();
+                tbPovrsina.Text = mojaTabela.Rows[trenutni]["povrsina"].ToString();
+                tbCena.Text = mojaTabela.Rows[trenutni]["cena"].ToString();
+                tbAdresa.Text = mojaTabela.Rows[trenutni]["adresa"].ToString();
+                if (trenutni == mojaTabela.Rows.Count - 1)
+                {
+                    btnSled.Enabled = false;
+                    btnPoslednji.Enabled = false;
+                }
+                else
+                {
+                    btnSled.Enabled = true;
+                    btnPoslednji.Enabled = true;
+                }
+                if (trenutni == 0)
+                {
+                    btnPred.Enabled = false;
+                    btnPrvi.Enabled = false;
+                }
+                else
+                {
+                    btnPred.Enabled = true;
+                    btnPrvi.Enabled = true;
+                }
+            }
+        }
+
+        private void btnSled_Click(object sender, EventArgs e)
+        {
+              prikazi(++trenutni);
+        }
+
+        private void btnPred_Click(object sender, EventArgs e)
+        {
+            prikazi(--trenutni);
+        }
+
+        private void btnPrvi_Click(object sender, EventArgs e)
+        {
+            trenutni = 0;
+            prikazi(trenutni);
+        }
+
+        private void btnPoslednji_Click(object sender, EventArgs e)
+        {
+            trenutni = mojaTabela.Rows.Count-1;
+            prikazi(trenutni);
+        }
+
+        private void btnObrisi_Click(object sender, EventArgs e)
+        {
+            SqlCommand komanda = new SqlCommand("delete from Objekat where id = " + int.Parse(tbId.Text), konekcija);
+            konekcija.Open();
+            komanda.ExecuteNonQuery();
+            konekcija.Close();
+            adapter.Fill(mojaTabela);
+            trenutni = mojaTabela.Rows.Count - 1;
+            prikazi(trenutni);
+        }
+
+        private void btnIzmeni_Click(object sender, EventArgs e)
+        {
+            SqlCommand komanda = new SqlCommand("update Objekat set tip = '" + cbTip.Text + "' , povrsina = " + tbPovrsina.Text + ", cena = " + tbCena.Text + ", adresa = '" + tbAdresa.Text + "' where id = " + int.Parse(tbId.Text), konekcija);
+            konekcija.Open();
+            komanda.ExecuteNonQuery();
+            konekcija.Close();
+            mojaTabela.Clear();
+            adapter = new SqlDataAdapter("select * from Objekat", konekcija);
+            adapter.Fill(mojaTabela);
+            prikazi(trenutni);
+        }
+
+        private void btnDodaj_Click(object sender, EventArgs e)
+        {
+            SqlCommand komanda = new SqlCommand("insert into Objekat (tip, povrsina, cena, adresa) values ('" + cbTip.Text + "' , " + tbPovrsina.Text + ", " + tbCena.Text + ", '" + tbAdresa.Text + "' )", konekcija);
+            konekcija.Open();
+            komanda.ExecuteNonQuery();
+            konekcija.Close();
+            mojaTabela.Clear();
+            adapter = new SqlDataAdapter("select * from Objekat order by id", konekcija);
+            adapter.Fill(mojaTabela);
+            trenutni = mojaTabela.Rows.Count - 1;
+            prikazi(trenutni);
+        }
+    }
+}
